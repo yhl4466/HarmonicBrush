@@ -774,10 +774,34 @@
       if (announce) {
         U.audio.unlock();
         for (const n of newly) U.toast('解锁 · ' + n.name, 'ach');
+        fireConfetti();
       }
       persist();
     }
     return newly;
+  }
+
+  function fireConfetti() {
+    try {
+      if (global.matchMedia && global.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (document.documentElement.dataset.motion === 'reduced') return;
+      const layer = h('div', { class: 'confetti-layer' });
+      const colors = ['#7ae7ff', '#ff7ad9', '#ffd166', '#8affc1', '#c4a7ff'];
+      for (let i = 0; i < 26; i++) {
+        layer.appendChild(h('i', {
+          style: {
+            left: (6 + Math.random() * 88) + '%',
+            background: colors[i % colors.length],
+            animationDelay: (Math.random() * 0.18) + 's',
+            animationDuration: (1.1 + Math.random() * 0.7) + 's',
+            '--x': (Math.random() * 160 - 80) + 'px',
+            '--r': (Math.random() * 720 - 360) + 'deg',
+          },
+        }));
+      }
+      document.body.appendChild(layer);
+      setTimeout(() => layer.remove(), 2200);
+    } catch (e) { /* noop */ }
   }
 
   function checkAchievements(opts = {}) {
@@ -825,7 +849,7 @@
     const wr = opts.workshop;
     if (wr && wr.stars >= 3 && wr.error <= 0.002) give('workshop_perfect');
     if (HP.lessons.LESSONS.every((l) => !!save.lessons[l.id])) give('lessons_all');
-    if (newly.length) persist();
+    if (newly.length) { persist(); fireConfetti(); }
     return newly;
   }
 
@@ -1703,7 +1727,8 @@
                 h('div', { class: 'modal-actions' },
                   U.btn('确认清除', { kind: 'danger', onClick: () => { backupSave(); try { localStorage.removeItem(SAVE_KEY); } catch (e) {} location.reload(); } }),
                   U.btn('取消', { kind: 'ghost', onClick: () => U.closeModal() })));
-              U.modal(card);
+              if (res.stars >= 2) fireConfetti();
+    U.modal(card);
             },
           }, '清除进度')),
         h('section', { class: 'set-card save-card' },
@@ -1849,6 +1874,11 @@
           U.btn('回到首页', { kind: 'primary', onClick: () => navigate('home') }))));
     }
     updateDock(parts);
+    if (screen) {
+      screen.classList.remove('screen-enter');
+      void screen.offsetWidth;
+      screen.classList.add('screen-enter');
+    }
     global.scrollTo(0, 0);
   }
 
@@ -2216,6 +2246,7 @@
     app, boot, renderRoute, navigate, getDailyInfo, handleResult,
     totalStars, chapterCleared, isLevelUnlocked, dev,
     version: APP_VERSION,
+    fireConfetti,
   };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
