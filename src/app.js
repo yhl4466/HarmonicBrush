@@ -11,7 +11,8 @@
   const SAVE_KEY = 'harmonicbrush.save.v1';
   const BACKUP_KEY = SAVE_KEY + '.backup';
   const APP_VERSION = '1.0.0';
-  const BUILD_DATE = '2026-10-17';
+  const APP_BUILD = 5;
+  const BUILD_DATE = '2026-10-18';
   const UPDATE_DEFAULT = 'https://harmonic-brush.pages.dev/version.json';
   const UPDATE_FALLBACK = 'https://yhl4466.github.io/HarmonicBrush/version.json';
   const CHANGELOG = [
@@ -212,7 +213,8 @@
         app.updateLatest = data;
         app.updateBase = new URL(src, location.href).href;
         app.updateCheckedAt = Date.now();
-        app.updateStatus = semverGt(data.version, APP_VERSION) ? 'available' : 'latest';
+        const newer = (Number(data.versionCode) || 0) > APP_BUILD || semverGt(data.version, APP_VERSION);
+        app.updateStatus = newer ? 'available' : 'latest';
         U.toast(app.updateStatus === 'available' ? '发现新版本 v' + data.version : '已是最新版本 v' + APP_VERSION);
         renderRoute();
         return;
