@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "versionCode": 5,
-  "date": "2026-10-17",
+  "date": "2026-10-18",
   "notes": "1.0.0：切屏与入场动效、彩带与启动动画；检查更新主备源自动切换；同页重绘保持滚动位置；存档可导出/导入。",
   "apk": "HarmonicBrush-1.0.0-b5.apk",
   "exe": "https://github.com/yhl4466/HarmonicBrush/releases/download/v1.0.0/HarmonicBrush-1.0.0.exe",
