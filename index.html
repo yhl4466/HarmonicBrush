@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="scope">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>谐波画笔 · 傅里叶画图游戏</title>
+<meta name="description" content="谐波画笔：给你一组频率，让旋转的圆拼出目标图像。主玩法频谱工坊有 91 个配方，只调配谐波；另有 20 关反向描摹、24 道读谱、每日一形与 9 节交互讲义。离线可玩。">
+<meta name="theme-color" content="#040a15">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23061020%22%2F%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%2354e6ff%22%20stroke-width%3D%222%22%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2230%22%20r%3D%2218%22%20opacity%3D%22.35%22%2F%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2230%22%20r%3D%2210%22%20opacity%3D%22.65%22%2F%3E%3C%2Fg%3E%3Ccircle%20cx%3D%2242%22%20cy%3D%2230%22%20r%3D%223.2%22%20fill%3D%22%2354e6ff%22%2F%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2230%22%20r%3D%222%22%20fill%3D%22%23ffd166%22%2F%3E%3C%2Fsvg%3E">
+<link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+<div id="screen">
+  <div class="boot-splash">
+    <div class="boot-inner">
+      <div class="boot-orbit"><i></i><i></i><i></i><b></b></div>
+      <div class="boot-title">谐波画笔</div>
+      <div class="boot-sub">FOURIER DRAWING GAME</div>
+    </div>
+  </div>
+</div>
+<div id="overlay" class="overlay"></div>
+<div id="toasts" class="toasts"></div>
+<noscript><p style="padding:24px;font-family:sans-serif;color:#dfeeff;background:#040a15">《谐波画笔》需要启用 JavaScript。</p></noscript>
+<script src="src/core.js"></script>
+<script src="src/shapes.js"></script>
+<script src="src/data.js"></script>
+<script src="src/render.js"></script>
+<script src="src/ui.js"></script>
+<script src="src/formula.js"></script>
+<script src="src/generator.js"></script>
+<script src="src/play.js"></script>
+<script src="src/workshop.js"></script>
+<script src="src/lessons.js"></script>
+<script src="src/app.js"></script>
+</body>
+</html>
