@@ -170,10 +170,14 @@
       [0, 1, 2].map((i) => h('span', { class: 'star' + (i < n ? ' on' : '') }, '★')));
   }
 
+  function haptic(ms = 6) {
+    try { if (navigator.vibrate) navigator.vibrate(ms); } catch (e) { /* noop */ }
+  }
+
   function btn(label, opts = {}) {
     return h('button', {
       class: 'btn ' + (opts.kind || '') + ' ' + (opts.cls || ''),
-      onclick: opts.onClick,
+      onclick: (e) => { haptic(6); if (opts.onClick) opts.onClick(e); },
       disabled: opts.disabled,
       title: opts.title,
     }, label);
@@ -182,7 +186,7 @@
   function iconBtn(label, opts = {}) {
     return h('button', {
       class: 'icon-btn ' + (opts.cls || ''),
-      onclick: opts.onClick,
+      onclick: (e) => { haptic(5); if (opts.onClick) opts.onClick(e); },
       title: opts.title,
       'aria-label': opts.title || label,
     }, label);
@@ -257,6 +261,6 @@
 
   HP.ui = {
     h, frag, btn, iconBtn, chip, toast, modal, closeModal, isModalOpen,
-    starsRow, paintShape, paintSpectrum, drawStar, audio, ensureLayers,
+    starsRow, paintShape, paintSpectrum, drawStar, audio, ensureLayers, haptic,
   };
 })(typeof globalThis !== 'undefined' ? globalThis : this);
