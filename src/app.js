@@ -16,9 +16,9 @@
   const UPDATE_FALLBACK = 'https://yhl4466.github.io/HarmonicBrush/version.json';
   const CHANGELOG = [
     { version: '1.0.0', date: '2026-10-17', notes: [
-      '测试版：版本号回退到 1.0.0，用于验证「检查更新 / 更新说明 / 下载新版」流程',
-      '界面与功能延续 v1.6.0；存档沿用，可导出 / 导入与恢复自动备份',
-      '播放页固定全屏 + 可收起的底部抽屉，切换页签时画布不变形',
+      '切屏、首页错开入场、按钮回弹、彩带与启动动画，操作更像应用',
+      '检查更新：主源失败自动切备用源；同页面重绘不再滚回顶部',
+      '播放页固定全屏 + 可收起底部抽屉；存档可导出 / 导入与自动备份',
     ] },
     { version: '1.6.0', date: '2026-10-17', notes: [
       '播放页固定全屏（100vh），修复 Android WebView 压矮画布、下半屏黑块',
@@ -465,7 +465,7 @@
       hero,
       h('section', { class: 'modes' }, modeWorkshop, modeCampaign, modeLessons, modeSandbox, modeReading, modeDaily, modeVersus),
       h('footer', { class: 'home-foot' },
-        h('span', {}, '《谐波画笔》· 用旋转的圆画出任意形状 · 离线可玩 · v' + APP_VERSION + ' · 测试版'),
+        h('span', {}, '《谐波画笔》· 用旋转的圆画出任意形状 · 离线可玩 · v' + APP_VERSION),
         h('span', {}, '圆 = 一个频率分量 · 半径 = 幅度 · 转角 = 相位'))));
 
     startAmbient(heroCv);
