@@ -12,7 +12,8 @@
   const BACKUP_KEY = SAVE_KEY + '.backup';
   const APP_VERSION = '1.0.0';
   const BUILD_DATE = '2026-10-17';
-  const UPDATE_DEFAULT = 'https://yhl4466.github.io/HarmonicBrush/version.json';
+  const UPDATE_DEFAULT = 'https://harmonic-brush.pages.dev/version.json';
+  const UPDATE_FALLBACK = 'https://yhl4466.github.io/HarmonicBrush/version.json';
   const CHANGELOG = [
     { version: '1.0.0', date: '2026-10-17', notes: [
       '测试版：版本号回退到 1.0.0，用于验证「检查更新 / 更新说明 / 下载新版」流程',
@@ -190,23 +191,27 @@
   }
 
   async function checkUpdate() {
-    const src = (app.save.settings.updateSource || UPDATE_DEFAULT).trim() || UPDATE_DEFAULT;
+    const primary = (app.save.settings.updateSource || UPDATE_DEFAULT).trim() || UPDATE_DEFAULT;
+    const sources = [primary, UPDATE_FALLBACK].filter((v, i, a) => v && a.indexOf(v) === i);
     app.updateStatus = 'checking';
     U.toast('正在检查更新…');
     renderRoute();
-    try {
-      const res = await fetch(src, { cache: 'no-store' });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      const data = await res.json();
-      app.updateLatest = data;
-      app.updateBase = new URL(src, location.href).href;
-      app.updateCheckedAt = Date.now();
-      app.updateStatus = semverGt(data.version, APP_VERSION) ? 'available' : 'latest';
-      U.toast(app.updateStatus === 'available' ? '发现新版本 v' + data.version : '已是最新版本 v' + APP_VERSION);
-    } catch (e) {
-      app.updateStatus = 'failed';
-      U.toast('检查失败：无法读取更新源');
+    for (const src of sources) {
+      try {
+        const res = await fetch(src, { cache: 'no-store' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        app.updateLatest = data;
+        app.updateBase = new URL(src, location.href).href;
+        app.updateCheckedAt = Date.now();
+        app.updateStatus = semverGt(data.version, APP_VERSION) ? 'available' : 'latest';
+        U.toast(app.updateStatus === 'available' ? '发现新版本 v' + data.version : '已是最新版本 v' + APP_VERSION);
+        renderRoute();
+        return;
+      } catch (e) { /* 试下一个源 */ }
     }
+    app.updateStatus = 'failed';
+    U.toast('检查失败：国内镜像与 GitHub 备用源都连不上');
     renderRoute();
   }
 
