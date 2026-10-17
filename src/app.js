@@ -94,7 +94,15 @@
     try {
       const raw = global.localStorage.getItem(SAVE_KEY);
       if (!raw) return defaultSave();
-      return mergeSave(defaultSave(), JSON.parse(raw));
+      const def = defaultSave();
+      const merged = mergeSave(def, JSON.parse(raw));
+      const oldSources = ['version.json',
+        'https://yhl4466.github.io/HarmonicBrush/version.json',
+        'https://yhl4466.gitee.io/HarmonicBrush/version.json'];
+      if (!merged.settings.updateSource || oldSources.includes(merged.settings.updateSource)) {
+        merged.settings.updateSource = def.settings.updateSource;
+      }
+      return merged;
     } catch (e) {
       return defaultSave();
     }
@@ -192,7 +200,7 @@
 
   async function checkUpdate() {
     const primary = (app.save.settings.updateSource || UPDATE_DEFAULT).trim() || UPDATE_DEFAULT;
-    const sources = [primary, UPDATE_FALLBACK].filter((v, i, a) => v && a.indexOf(v) === i);
+    const sources = [UPDATE_DEFAULT, primary, UPDATE_FALLBACK].filter((v, i, a) => v && a.indexOf(v) === i);
     app.updateStatus = 'checking';
     U.toast('正在检查更新…');
     renderRoute();
@@ -1854,6 +1862,7 @@
     const parts = parseHash();
     const name = parts[0] || 'home';
     const screen = document.getElementById('screen');
+    const prev = document.body.dataset.screen;
     document.body.dataset.screen = name;
     try {
       if (name === 'home') renderHome(screen);
@@ -1879,7 +1888,7 @@
       void screen.offsetWidth;
       screen.classList.add('screen-enter');
     }
-    global.scrollTo(0, 0);
+    if (prev !== name) global.scrollTo(0, 0);
   }
 
   /* ========================= 自检 ========================= */
